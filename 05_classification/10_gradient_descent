@@ -29,7 +29,7 @@ for epoch in range(epochs):
 
     w1 -= learning_rate * sum(weight1_d) / len(weight1_d)
     w2 -= learning_rate * sum(weight2_d) / len(weight2_d)
-    b -= learning_rate * sum(bias_d) / len(bias_d)
+    b  -= learning_rate * sum(bias_d) / len(bias_d)
 
 print('------------------------')
 # Test the network
