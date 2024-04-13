@@ -11,6 +11,10 @@ inputs = [(0.0000, 0.0000), (0.2778, 0.2500), (0.2778, 0.9375), (0.9167, 0.6563)
     (0.1667, 0.3125), (0.4167, 0.9375), (0.3611, 0.9688), (0.9167, 0.3438),
     (0.0833, 0.0313), (0.3333, 0.8750)]
 
-# targets = [red, red, blue, green, red, red, red, green, red, green, blue, green, red,
-#     green, red, green, green, blue, green, blue, green, blue, blue, blue,
-#     red, blue, blue, green, red, blue]
+red   = (1, 0, 0)
+green = (0, 1, 0)
+blue  = (0, 0, 1)
+
+targets = [red, red, blue, green, red, red, red, green, red, green, blue, green, red,
+    green, red, green, green, blue, green, blue, green, blue, blue, blue,
+    red, blue, blue, green, red, blue]
