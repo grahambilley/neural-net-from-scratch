@@ -44,4 +44,6 @@ Instead of coding the cost function explicitly, calculate the derivative of
 the cost function. Minimize the cost function by moving toward where the 
 derivative is zero. The sign of the derivative tells us the direction we need
 to adjust the weights.
+
+Sum the derivatives across all training samples. This is batch gradient descent.
 '''
