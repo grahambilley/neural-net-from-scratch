@@ -3,8 +3,8 @@ import math
 
 weights = [[0.1, 0.2], [0.15, 0.25], [0.18, 0.1]]
 biases = [0.3, 0.4, 0.35]
-epochs = 1
-learning_rate = 0.1
+epochs = 100
+learning_rate = 0.2
 
 def softmax(predictions):
     m = max(predictions)
@@ -28,7 +28,30 @@ for epoch in range(epochs):
     cost = sum([log_loss(ac, ta) for ac, ta in zip(act, data.targets)]) / len(act)
     print(f'ep:{epoch}, c:{cost:.4f}')
 
-    # print(pred)
-    # print(f'row count: {len(pred)}')
-    # print(f'column count: {len(pred[0])}')
+    errors_d = [[a-t for a,t in zip(ac, ta)] for ac, ta in zip(act, data.targets)]
+    inputs_T = list(zip(*data.inputs))  # transpose the training inputs 
+    errors_d_T = list(zip(*errors_d))   # transpose the error derivatives
+    # Need transposed versions ni order to do the matrix multiplication with list comprehension
+    weights_d = [[sum([e*i for e,i in zip(er, inp)]) for er in errors_d_T] for inp in inputs_T]
+    biases_d  = [sum([e for e in errors]) for errors in errors_d_T]
+
+    # Need to transpose weights_d to make it the same shape as the weights matrix.
+    weights_d_T = list(zip(*weights_d))
+
+    # Update the weights and biases
+    for y in range(len(weights_d_T)):
+        for x in range(len(weights_d_T[0])):
+            weights[y][x] -= learning_rate * weights_d_T[y][x] / len(data.inputs)
+        biases[y] -= learning_rate * biases_d[y] / len(data.inputs)
+    
+# test the network
+pred = [[sum([w*i for w,i in zip(we, inp)]) + bi 
+         for we, bi in zip(weights, biases)] for inp in data.test_inputs]
+act = [softmax(p) for p in pred]
+correct = 0     # keep a counter with correct predictions
+for a, t in zip(act, data.test_targets):
+    if a.index(max(a)) == t.index(max(t)):
+       correct += 1
+
+print(f'correct: {correct}/{len(act)} = {correct/len(act):%}')
 
