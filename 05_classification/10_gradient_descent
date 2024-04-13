@@ -26,9 +26,9 @@ for epoch in range(epochs):
     errors_d  = [2*(p-t) for p, t in zip(pred, targets)]
     weights_d = [[e*i for i in inp] for e, inp in zip(errors_d, inputs)]
     bias_d    = [e*1 for e in errors_d]
-
-    w1 -= learning_rate * sum(weight1_d) / len(weight1_d)
-    w2 -= learning_rate * sum(weight2_d) / len(weight2_d)
+    weights_d_T = list(zip(*weights_d))     # Transpose weights_d
+    for i in range(len(weights)):
+        weights[i] -= learning_rate * sum(weights_d_T[i]) / len(weights_d)
     b  -= learning_rate * sum(bias_d) / len(bias_d)
 
 print('------------------------')
@@ -40,7 +40,7 @@ test_inputs = [(0.1600, 0.1391),
                (0.1600, 0.7185)]
 test_targets = [500, 850, 1650, 950, 1375]
 
-pred = [predict(i1, i2) for i1, i2 in test_inputs]
+pred = [predict(inp) for inp in test_inputs]
 for p, t in zip(pred, test_targets):
     print(f'target:${t}, predicted:${p:.0f}')
 print('------------------------')
