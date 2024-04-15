@@ -1,10 +1,10 @@
-import flowersdata as data
+import flowersdata_nonlinear as data
 import math
 
 weights = [[0.1, 0.2], [0.15, 0.25], [0.18, 0.1]]
 biases = [0.3, 0.4, 0.35]
-epochs = 100
-learning_rate = 0.2
+epochs = 5000
+learning_rate = 0.5
 
 def softmax(predictions):
     m = max(predictions)
