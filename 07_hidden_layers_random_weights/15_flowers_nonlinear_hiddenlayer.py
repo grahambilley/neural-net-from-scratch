@@ -1,5 +1,6 @@
 import flowersdata_nonlinear as data
 import math
+import random
 
 def softmax(predictions):
     m = max(predictions)
@@ -13,16 +14,23 @@ def log_loss(activations, targets):
 
 epochs = 5000
 learning_rate = 0.3
+input_count, hidden_count, output_count = 2, 8, 3
 
 # Create the weights matrices
 # wih = Weights for Input to Hidden Layer
 # who = Weights for Hidden to Output Layer
 # bih = Biases for Input to Hidden Layer
 # bho = Biases for Hidden to Output Layer
-wih = [[0.1, -0.2], [-0.3, 0.25], [0.12, 0.23], [-0.11, -0.22]] # 4 Hidden Neurons
-who = [[0.2, 0.17, 0.3, -0.11], [0.3, -0.4, 0.5, -0.22], [0.12, 0.23, 0.15, 0.33]]
-bih = [0.2, 0.34, 0.21, 0.44]     # 4 hidden neurons
-bho = [0.3, 0.29, 0.37]     # 3 Output Neurons
+
+# wih = [[0.1, -0.2], [-0.3, 0.25], [0.12, 0.23], [-0.11, -0.22]] # 4 Hidden Neurons
+# who = [[0.2, 0.17, 0.3, -0.11], [0.3, -0.4, 0.5, -0.22], [0.12, 0.23, 0.15, 0.33]]
+# bih = [0.2, 0.34, 0.21, 0.44]     # 4 hidden neurons
+# bho = [0.3, 0.29, 0.37]     # 3 Output Neurons
+
+wih = [[random.random() - 0.5 for _ in range(input_count)] for _ in range(hidden_count)]
+who = [[random.random() - 0.5 for _ in range(hidden_count)] for _ in range(output_count)]
+bih = [0 for _ in range(hidden_count)]
+bho = [0 for _ in range(output_count)]
 
 for epoch in range(epochs):
     pred_h = [[sum([w*a for w,a in zip(weights, inp)]) + 
@@ -63,14 +71,14 @@ for epoch in range(epochs):
 
     # Update weights and biases for all layers
     who_d_T = list(zip(*who_d))
-    for y in range(len(who_d_T)):
-        for x in range(len(who_d_T[0])):
+    for y in range(output_count):
+        for x in range(hidden_count):
             who[y][x] -= learning_rate * who_d_T[y][x] / len(data.inputs)
         bho[y] -= learning_rate * bho_d[y] / len(data.inputs)
 
     wih_d_T = list(zip(*wih_d))
-    for y in range(len(wih_d_T)):
-        for x in range(len(wih_d_T[0])):
+    for y in range(hidden_count):
+        for x in range(input_count):
             wih[y][x] -= learning_rate * wih_d_T[y][x] / len(data.inputs)
         bih[y] -= learning_rate * bih_d[y] / len(data.inputs)
 
@@ -83,15 +91,10 @@ pred_o = [[sum([w*a for w,a in zip(weights, inp)]) + bias
 act_o = [softmax(predictions) for predictions in pred_o]
 
 correct = 0
-counter = 1
 for a,t in zip(act_o, data.test_targets):
     if a.index(max(a)) == t.index(max(t)):
         correct += 1
-    else:
-        print(counter)
-        print(a)
-        print(t)
-    counter += 1
+
 print(f'Correct: {correct}/{len(act_o)} ({correct / len(act_o):%})')
 
 
