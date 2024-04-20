@@ -27,6 +27,7 @@ input_count, hidden_count, output_count = 2, 8, 3
 # bih = [0.2, 0.34, 0.21, 0.44]     # 4 hidden neurons
 # bho = [0.3, 0.29, 0.37]     # 3 Output Neurons
 
+# Initialize weights and biases randomly, on a uniform [-0.5, 0.5]
 wih = [[random.random() - 0.5 for _ in range(input_count)] for _ in range(hidden_count)]
 who = [[random.random() - 0.5 for _ in range(hidden_count)] for _ in range(output_count)]
 bih = [0 for _ in range(hidden_count)]
